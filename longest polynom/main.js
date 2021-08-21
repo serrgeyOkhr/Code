@@ -1,27 +1,67 @@
-// let s = "babad"
+let s = "bb"
 // let s = "anugnxshgonmqydttcvmtsoaprxnhpmpovdolbidqiyqubirkvhwppcdyeouvgedccipsvnobrccbndzjdbgxkzdbcjsjjovnhpnbkurxqfupiprpbiwqdnwaqvjbqoaqzkqgdxkfczdkznqxvupdmnyiidqpnbvgjraszbvvztpapxmomnghfaywkzlrupvjpcvascgvstqmvuveiiixjmdofdwyvhgkydrnfuojhzulhobyhtsxmcovwmamjwljioevhafdlpjpmqstguqhrhvsdvinphejfbdvrvabthpyyphyqharjvzriosrdnwmaxtgriivdqlmugtagvsoylqfwhjpmjxcysfujdvcqovxabjdbvyvembfpahvyoybdhweikcgnzrdqlzusgoobysfmlzifwjzlazuepimhbgkrfimmemhayxeqxynewcnynmgyjcwrpqnayvxoebgyjusppfpsfeonfwnbsdonucaipoafavmlrrlplnnbsaghbawooabsjndqnvruuwvllpvvhuepmqtprgktnwxmflmmbifbbsfthbeafseqrgwnwjxkkcqgbucwusjdipxuekanzwimuizqynaxrvicyzjhulqjshtsqswehnozehmbsdmacciflcgsrlyhjukpvosptmsjfteoimtewkrivdllqiotvtrubgkfcacvgqzxjmhmmqlikrtfrurltgtcreafcgisjpvasiwmhcofqkcteudgjoqqmtucnwcocsoiqtfuoazxdayricnmwcg"
 
-let s = "kyyrjtdplseovzwjkykrjwhxquwxsfsorjiumvxjhjmgeueafubtonhlerrgsgohfosqssmizcuqryqomsipovhhodpfyudtusjhonlqabhxfahfcjqxyckycstcqwxvicwkjeuboerkmjshfgiglceycmycadpnvoeaurqatesivajoqdilynbcihnidbizwkuaoegmytopzdmvvoewvhebqzskseeubnretjgnmyjwwgcooytfojeuzcuyhsznbcaiqpwcyusyyywqmmvqzvvceylnuwcbxybhqpvjumzomnabrjgcfaabqmiotlfojnyuolostmtacbwmwlqdfkbfikusuqtupdwdrjwqmuudbcvtpieiwteqbeyfyqejglmxofdjksqmzeugwvuniaxdrunyunnqpbnfbgqemvamaxuhjbyzqmhalrprhnindrkbopwbwsjeqrmyqipnqvjqzpjalqyfvaavyhytetllzupxjwozdfpmjhjlrnitnjgapzrakcqahaqetwllaaiadalmxgvpawqpgecojxfvcgxsbrldktufdrogkogbltcezflyctklpqrjymqzyzmtlssnavzcquytcskcnjzzrytsvawkavzboncxlhqfiofuohehaygxidxsofhmhzygklliovnwqbwwiiyarxtoihvjkdrzqsnmhdtdlpckuayhtfyirnhkrhbrwkdymjrjklonyggqnxhfvtkqxoicakzsxmgczpwhpkzcntkcwhkdkxvfnjbvjjoumczjyvdgkfukfuldolqnauvoyhoheoqvpwoisniv"
 
 var longestPalindrome = function(s) {
-    let subString = ""
-    let reversSubString = ""
-    let i, j = 0
-    // let reversString = s.split('').reverse().join('')
-    for (i = 0; i < s.length;) {
-        for (j = 0; i >= 0; j++) {
-            subString = s.slice(i,s.length-j)
-            reversSubString = subString.split('').reverse().join('')
-            if (subString == reversSubString) {
-                return subString
+    let count = 1
+    let FromTo = []
+    let flag = false
+    let longest = 0;
+    let from = 0
+    let to = 0
+for (let i = 1; i < s.length-1; i++) {
+    if (s[i-count]==s[i+count]) {
+        flag = true;
+        while (flag) {
+            count++;
+            if (s[i-count] && s[i-count]==s[i+count]) {
+                continue;
             }
             else {
-                i--;
+                flag = false;
+                count--;
+                FromTo.push(i-count);
+                FromTo.push(i+count);
+                count = 1;
             }
         }
-        i = j;
+        
     }
-    return s[0]
+}
+for (let j = 1; j < s.length; j++) {
+    if (s[j-count]==s[j+count-1]) {
+        flag = true;
+        while (flag) {
+            count++;
+            if (s[j-count] && s[j-count]==s[j+count-1]) {
+                continue;
+            }
+            else {
+                flag = false;
+                count--;
+                FromTo.push(j-count);
+                FromTo.push(j+count-1);
+                count = 1;
+            }
+        }
+        
+    }
+}
+if(FromTo[0] == undefined) {
+ return s[0];
+}
+else {
+    for (let k = 1; k < FromTo.length; k+=2) {
+        if (FromTo[k]-FromTo[k-1] > longest) {
+            from = FromTo[k-1]
+            to = FromTo[k]+1
+            longest = FromTo[k]-FromTo[k-1]
+        }
+        
+    }
+    let rez = s.slice(from, to)
+    return rez
+}
 };
 
 console.log(longestPalindrome(s))
