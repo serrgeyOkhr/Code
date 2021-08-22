@@ -9,12 +9,12 @@ var longestPalindrome = function(s) {
     let longest = 0;
     let from = 0
     let to = 0
-for (let i = 1; i < s.length-1; i++) {
+for (let i = 1; i < s.length; i++) {
     if (s[i-count]==s[i+count]) {
         flag = true;
         while (flag) {
             count++;
-            if (s[i-count] && s[i-count]==s[i+count]) {
+            if (s[i+count] &&s[i-count] && s[i-count]==s[i+count]) {
                 continue;
             }
             else {
@@ -25,15 +25,12 @@ for (let i = 1; i < s.length-1; i++) {
                 count = 1;
             }
         }
-        
     }
-}
-for (let j = 1; j < s.length; j++) {
-    if (s[j-count]==s[j+count-1]) {
+        if (s[j-count]==s[j+count-1]) {
         flag = true;
         while (flag) {
             count++;
-            if (s[j-count] && s[j-count]==s[j+count-1]) {
+            if (s[j+count - 1] && s[j-count] && s[j-count]==s[j+count-1]) {
                 continue;
             }
             else {
@@ -47,6 +44,9 @@ for (let j = 1; j < s.length; j++) {
         
     }
 }
+for (let j = 1; j < s.length; j++) {
+
+}
 if(FromTo[0] == undefined) {
  return s[0];
 }
@@ -54,12 +54,12 @@ else {
     for (let k = 1; k < FromTo.length; k+=2) {
         if (FromTo[k]-FromTo[k-1] > longest) {
             from = FromTo[k-1]
-            to = FromTo[k]+1
+            to = FromTo[k]
             longest = FromTo[k]-FromTo[k-1]
         }
         
     }
-    let rez = s.slice(from, to)
+    let rez = s.slice(from, to+1)
     return rez
 }
 };
